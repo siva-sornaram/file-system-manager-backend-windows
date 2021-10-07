@@ -7,7 +7,6 @@ public class Ntfs {
 
      static {
          try {
-//             System.loadLibrary("libfile");
             System.load("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\bin\\libfile1.dll");
          } catch (Throwable t) {
              throw t;

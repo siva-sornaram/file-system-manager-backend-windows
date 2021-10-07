@@ -9,12 +9,21 @@ public class Files {
     private int id;
     private String fname;
     private String[] permissions;
+    private int permissionval;
 
     /**
      * @return the id
      */
     public int getId() {
         return id;
+    }
+
+    public int getPermissionval() {
+        return permissionval;
+    }
+
+    public void setPermissionval(int permissionval) {
+        this.permissionval = permissionval;
     }
 
     /**
@@ -52,10 +61,11 @@ public class Files {
         this.permissions = permissions;
     }
     
-    public Files(int id, String fname, String[] permissions) {
+    public Files(int id, String fname, String[] permissions, int permissionval) {
         this.id = id;
         this.fname = fname;
         this.permissions = permissions;
+        this.permissionval = permissionval;
     }
     
 }

@@ -71,7 +71,7 @@ bool CanAccessFolder(LPCTSTR folderName, DWORD genericAccessRights,DWORD& grante
      {
         //  wprintf_s(L"Full Control\n");
          access.push_back("Full Control");
-         return access;
+        //  return access;
      }
      if (((Mask & GENERIC_READ) == GENERIC_READ)
          || ((Mask & FILE_GENERIC_READ) == FILE_GENERIC_READ))
