@@ -128,7 +128,7 @@ JNIEXPORT void JNICALL Java_com_siva_Ntfs_get_1all_1files_1names_1within_1folder
     files = list_directory(path);
     
     ofstream outfile;
-    outfile.open("outfile.dat", ios::out | ios::trunc );
+    outfile.open("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\outfile.dat", ios::out | ios::trunc );
     int i = 0;
 
     map<string, vector<string>> :: iterator it=files.begin();

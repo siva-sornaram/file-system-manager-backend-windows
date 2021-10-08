@@ -1,15 +1,16 @@
 package com.siva;
 
 import com.google.gson.Gson;
+
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -20,18 +21,23 @@ import java.util.Scanner;
 @Path("ntfs")
 public class NtfsResource {
     private final Ntfs obj = new Ntfs();
+    private final NtfsSet ntfsobj = new NtfsSet();
 
     private static int NONE = 0;
     private static int WRITE = 1;
     private static int READ = 2;
     private static int EXECUTE = 4;
-    private static int FULLCONTROL = 8;
+    private static int FULLCONTROL = 7;
 
-    @GET
+    @POST
+    @Path("getfiles")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getFiles() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String getFiles(Files filepath) {
+        String filepathvar = filepath.getPath();
+        System.out.println("path : " + filepathvar);
         ArrayList<Files> fileArr = new ArrayList<>();
-        obj.get_all_files_names_within_folder("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\logs");
+        obj.get_all_files_names_within_folder(filepathvar);
         
         try {
             File data = new File("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\outfile.dat");
@@ -53,7 +59,7 @@ public class NtfsResource {
                         }
                     }
                 }
-                fileArr.add(new Files(Integer.parseInt(fileStr[0]), fileStr[1], fileper, permissionval));
+                fileArr.add(new Files(Integer.parseInt(fileStr[0]), fileStr[1], fileper, permissionval, filepathvar));
 //                System.out.println(fileData);
             }
             reader.close();
@@ -63,5 +69,13 @@ public class NtfsResource {
         }
         
         return new Gson().toJson(fileArr);
+    }
+
+    @POST
+    @Path("setfilepermission")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean setPermission(Files file) {
+        boolean isSet = ntfsobj.setPermission(file.getFname(), file.getPermissionval());
+        return isSet;
     }
 }
