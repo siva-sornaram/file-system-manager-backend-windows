@@ -118,7 +118,7 @@ bool grantAccess(std::string file, int permissionval) {
 
     HANDLE hFile = CreateFileA(file.c_str(),               // file name 
          GENERIC_READ,          // open for reading 
-         0,                     // do not share 
+         FILE_SHARE_READ | FILE_SHARE_WRITE,                     // do not share 
          NULL,                  // default security 
          OPEN_EXISTING,         // existing file only 
          FILE_ATTRIBUTE_NORMAL, // normal file 
@@ -146,9 +146,11 @@ bool grantAccess(std::string file, int permissionval) {
      {
          std::cout << "Error   :   " << GetLastError() << '\n';
      }
+
+     CloseHandle(hFile);
      HANDLE hFile1 = CreateFileA(file.c_str(),               // file name 
          GENERIC_READ,          // open for reading 
-         0,                     // do not share 
+         FILE_SHARE_READ | FILE_SHARE_WRITE,                     // do not share 
          NULL,                  // default security 
          OPEN_EXISTING,         // existing file only 
          FILE_ATTRIBUTE_NORMAL, // normal file 
@@ -157,6 +159,8 @@ bool grantAccess(std::string file, int permissionval) {
      {
          std::cout << "CreateFileA2 Error  :  " << GetLastError() << '\n';
      }
+
+    CloseHandle(hFile1);
      return FALSE;
 }
 

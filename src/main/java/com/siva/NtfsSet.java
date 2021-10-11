@@ -18,6 +18,6 @@ public class NtfsSet {
 
     public static void main(String[] args) {
         NtfsSet obj = new NtfsSet();
-        obj.setPermission("C:\\Users\\Vicky\\Desktop\\sample.txt", 2);
+        obj.setPermission("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\samples\\sample2.txt", 7);
     }
 }

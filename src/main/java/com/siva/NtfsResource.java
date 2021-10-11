@@ -31,7 +31,6 @@ public class NtfsResource {
 
     @POST
     @Path("getfiles")
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String getFiles(Files filepath) {
         String filepathvar = filepath.getPath();
