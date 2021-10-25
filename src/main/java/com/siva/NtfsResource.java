@@ -27,7 +27,7 @@ public class NtfsResource {
     private static int WRITE = 1;
     private static int READ = 2;
     private static int EXECUTE = 4;
-    private static int FULLCONTROL = 7;
+    private static int FULLCONTROL = 8;
 
     @POST
     @Path("getfiles")

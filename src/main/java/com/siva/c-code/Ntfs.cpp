@@ -93,7 +93,7 @@ bool CanAccessFolder(LPCTSTR folderName, DWORD genericAccessRights,DWORD& grante
 std::map<std::string, std::vector<std::string>>
 list_directory(const std::string &directory)
 {
-    DWORD access_mask = FILE_GENERIC_READ | FILE_GENERIC_WRITE | FILE_GENERIC_EXECUTE | FILE_ALL_ACCESS;
+    DWORD access_mask = MAXIMUM_ALLOWED;
     std::map<std::string, std::vector<std::string>> files;
     WIN32_FIND_DATAA findData;
     HANDLE hFind = INVALID_HANDLE_VALUE;

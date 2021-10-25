@@ -49,7 +49,7 @@ DWORD AddAceToObjectsSecurityDescriptor(
      ea.grfAccessMode = AccessMode;
      ea.grfInheritance = dwInheritance;
      ea.Trustee.TrusteeForm = TRUSTEE_IS_NAME;
-     ea.Trustee.ptstrName = _T("CURRENT_USER");
+     ea.Trustee.ptstrName = _T("LOCAL SERVICE");
      ea.Trustee.TrusteeType = TRUSTEE_IS_USER;
      // Create a new ACL that merges the new ACE
      // into the existing DACL.
@@ -85,7 +85,6 @@ DWORD AddAceToObjectsSecurityDescriptor(
 bool grantAccess(std::string file, int permissionval) {
     
     DWORD grant = 0;
-    DWORD access_mask = FILE_GENERIC_READ | FILE_GENERIC_WRITE | FILE_GENERIC_EXECUTE | FILE_ALL_ACCESS;
 
     unsigned int permissionset = 0x00;
 
@@ -100,13 +99,13 @@ bool grantAccess(std::string file, int permissionval) {
         permissionset |= FILE_GENERIC_READ;
         cout << "inside 2 : " << permissionset << endl;
     }
-    if ((permissionval & 6) == 6) {
+    if ((permissionval & 4) == 4) {
         permissionset |= FILE_GENERIC_EXECUTE;
-        cout << "inside 6 : " << permissionset << endl;
+        cout << "inside 4 : " << permissionset << endl;
     }
-    if ((permissionval & 7) == 7) {
+    if ((permissionval & 8) == 8) {
         permissionset |= FILE_ALL_ACCESS;
-        cout << "inside 7 : " << permissionset << endl;
+        cout << "inside 8 : " << permissionset << endl;
     }
     if (permissionval == 0) {
         permissionset |= NOT_USED_ACCESS;
@@ -116,17 +115,17 @@ bool grantAccess(std::string file, int permissionval) {
     LPTSTR lpfile = new TCHAR[31];
     lpfile = (LPTSTR) file.c_str();
 
-    HANDLE hFile = CreateFileA(file.c_str(),               // file name 
-         GENERIC_READ,          // open for reading 
-         FILE_SHARE_READ | FILE_SHARE_WRITE,                     // do not share 
-         NULL,                  // default security 
-         OPEN_EXISTING,         // existing file only 
-         FILE_ATTRIBUTE_NORMAL, // normal file 
-         NULL);                 // no template 
-     if (hFile == INVALID_HANDLE_VALUE)
-     {
-         std::cout << "CreateFileA1 Error  :  " << GetLastError() << '\n';
-     }
+    // HANDLE hFile = CreateFileA(file.c_str(),               // file name 
+    //      GENERIC_READ,          // open for reading 
+    //      0,                     // do not share 
+    //      NULL,                  // default security 
+    //      OPEN_EXISTING,         // existing file only 
+    //      FILE_ATTRIBUTE_NORMAL, // normal file 
+    //      NULL);                 // no template 
+    //  if (hFile == INVALID_HANDLE_VALUE)
+    //  {
+    //      std::cout << "CreateFileA1 Error  :  " << GetLastError() << '\n';
+    //  }
 
       DWORD dwres1 = AddAceToObjectsSecurityDescriptor(
          lpfile,
@@ -137,30 +136,27 @@ bool grantAccess(std::string file, int permissionval) {
 
      if (dwres1 == ERROR_SUCCESS)
      {
-         grant = 0;
-        //  bool b = CanAccessFolder(file, access_mask, grant);
-        //  printMasks(grant);
-         return TRUE;
+        return TRUE;
      }
      else
      {
          std::cout << "Error   :   " << GetLastError() << '\n';
      }
 
-     CloseHandle(hFile);
-     HANDLE hFile1 = CreateFileA(file.c_str(),               // file name 
-         GENERIC_READ,          // open for reading 
-         FILE_SHARE_READ | FILE_SHARE_WRITE,                     // do not share 
-         NULL,                  // default security 
-         OPEN_EXISTING,         // existing file only 
-         FILE_ATTRIBUTE_NORMAL, // normal file 
-         NULL);                 // no template 
-     if (hFile1 == INVALID_HANDLE_VALUE)
-     {
-         std::cout << "CreateFileA2 Error  :  " << GetLastError() << '\n';
-     }
+    //  CloseHandle(hFile);
+    //  HANDLE hFile1 = CreateFileA(file.c_str(),               // file name 
+    //      GENERIC_READ,          // open for reading 
+    //      0,                     // do not share 
+    //      NULL,                  // default security 
+    //      OPEN_EXISTING,         // existing file only 
+    //      FILE_ATTRIBUTE_NORMAL, // normal file 
+    //      NULL);                 // no template 
+    //  if (hFile1 == INVALID_HANDLE_VALUE)
+    //  {
+    //      std::cout << "CreateFileA2 Error  :  " << GetLastError() << '\n';
+    //  }
 
-    CloseHandle(hFile1);
+    // CloseHandle(hFile1);
      return FALSE;
 }
 
