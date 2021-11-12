@@ -49,7 +49,7 @@ DWORD AddAceToObjectsSecurityDescriptor(
      ea.grfAccessMode = AccessMode;
      ea.grfInheritance = dwInheritance;
      ea.Trustee.TrusteeForm = TRUSTEE_IS_NAME;
-     ea.Trustee.ptstrName = _T("LOCAL SERVICE");
+     ea.Trustee.ptstrName = _T("CURRENT_USER");
      ea.Trustee.TrusteeType = TRUSTEE_IS_USER;
      // Create a new ACL that merges the new ACE
      // into the existing DACL.
@@ -115,17 +115,6 @@ bool grantAccess(std::string file, int permissionval) {
     LPTSTR lpfile = new TCHAR[31];
     lpfile = (LPTSTR) file.c_str();
 
-    // HANDLE hFile = CreateFileA(file.c_str(),               // file name 
-    //      GENERIC_READ,          // open for reading 
-    //      0,                     // do not share 
-    //      NULL,                  // default security 
-    //      OPEN_EXISTING,         // existing file only 
-    //      FILE_ATTRIBUTE_NORMAL, // normal file 
-    //      NULL);                 // no template 
-    //  if (hFile == INVALID_HANDLE_VALUE)
-    //  {
-    //      std::cout << "CreateFileA1 Error  :  " << GetLastError() << '\n';
-    //  }
 
       DWORD dwres1 = AddAceToObjectsSecurityDescriptor(
          lpfile,
@@ -143,20 +132,7 @@ bool grantAccess(std::string file, int permissionval) {
          std::cout << "Error   :   " << GetLastError() << '\n';
      }
 
-    //  CloseHandle(hFile);
-    //  HANDLE hFile1 = CreateFileA(file.c_str(),               // file name 
-    //      GENERIC_READ,          // open for reading 
-    //      0,                     // do not share 
-    //      NULL,                  // default security 
-    //      OPEN_EXISTING,         // existing file only 
-    //      FILE_ATTRIBUTE_NORMAL, // normal file 
-    //      NULL);                 // no template 
-    //  if (hFile1 == INVALID_HANDLE_VALUE)
-    //  {
-    //      std::cout << "CreateFileA2 Error  :  " << GetLastError() << '\n';
-    //  }
 
-    // CloseHandle(hFile1);
      return FALSE;
 }
 
