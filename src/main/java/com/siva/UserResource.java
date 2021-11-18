@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 public class UserResource {
     
     UserRepository userRepo = new UserRepository();
+    CreateDirectory newDir = new CreateDirectory();
     
 
     @GET
@@ -32,6 +33,10 @@ public class UserResource {
     public boolean createUser(User user) {
         boolean isCreated = userRepo.createUser(user);
         System.out.println(isCreated);
+
+        if(isCreated) {
+            newDir.createDir("C:\\Program Files\\Apache Software Foundation\\Tomcat 10.0\\Users", user.getUserName());
+        }
 
         return isCreated;
     }

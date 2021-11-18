@@ -10,25 +10,19 @@ using namespace std;
 
 bool CanAccessFolder(LPCTSTR folderName, DWORD genericAccessRights,DWORD& grantedRights)
 {
-    // cout << "canAccessFolder called" << std::endl;
-    // cout << "foldername : " << folderName << std::endl;
     bool bRet = false;
     DWORD length = 0;
     if (!::GetFileSecurity(folderName, OWNER_SECURITY_INFORMATION | GROUP_SECURITY_INFORMATION
         | DACL_SECURITY_INFORMATION, NULL, NULL, &length) &&
         ERROR_INSUFFICIENT_BUFFER == ::GetLastError()) {
-//             cout << "Inside 1st if" << std::endl;
         PSECURITY_DESCRIPTOR security = static_cast< PSECURITY_DESCRIPTOR >(::malloc(length));
         if (security && ::GetFileSecurity(folderName, OWNER_SECURITY_INFORMATION | GROUP_SECURITY_INFORMATION
-            | DACL_SECURITY_INFORMATION, security, length, &length)) {
-                // cout << "Inside 2nd if" << std::endl;
+            | DACL_SECURITY_INFORMATION, security, length, &length)) {;
             HANDLE hToken = NULL;
             if (::OpenProcessToken(::GetCurrentProcess(), TOKEN_IMPERSONATE | TOKEN_QUERY |
                 TOKEN_DUPLICATE | STANDARD_RIGHTS_READ, &hToken)) {
-                    // cout << "Inside 3rd if" << std::endl;
                 HANDLE hImpersonatedToken = NULL;
                 if (::DuplicateToken(hToken, SecurityImpersonation, &hImpersonatedToken)) {
-                    // cout << "Inside 4th if" << std::endl;
                     GENERIC_MAPPING mapping = { 0xFFFFFFFF };
                     PRIVILEGE_SET privileges = { 0 };
                     DWORD grantedAccess = 0, privilegesLength = sizeof(privileges);
@@ -43,11 +37,8 @@ bool CanAccessFolder(LPCTSTR folderName, DWORD genericAccessRights,DWORD& grante
                     if (::AccessCheck(security, hImpersonatedToken, genericAccessRights,
                         &mapping, &privileges, &privilegesLength, &grantedAccess, &result)) 
                     {
-                        // cout << "Inside 5th if" << std::endl;
                         bRet = (result == TRUE);
-                        // cout << "bRet : " << bRet << "\t" << "result : " << result << std::endl;
                         grantedRights = grantedAccess;
-                        // cout << "granted rights : " << grantedRights << "\t" << grantedAccess << std::endl;
                     }
                     ::CloseHandle(hImpersonatedToken);
                 }
